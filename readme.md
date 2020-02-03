@@ -1,44 +1,46 @@
-# Wi-Fi Environmental Datalogger
+# WiFi Environmental Datalogger
+
+<deprecated />
+
+This project has been replaced by [Jaycar-Electronics/Motherload-datalogger](https://jaycar.com.au/motherload-datalogger) - Use the below modules with the motherload-datalogger project if you require a WiFi Environmental Datalogger. This project is now archived and is not supported.
 
 Another handy Arduino based tool to add to your workbench, the Environmental Datalogger measures temperature, humidity and light levels and logs it to an SD card with the time of the reading. The data is saved as a .csv file, which will open straight into the Excel spreadsheet program to allow it to be easily graphed and analysed. It is also hosts a minimal web-server, which allows the log files to be downloaded over Wi-Fi. Other features include:
 
-* Diagnostic LED to show error status
-* Card activity LED so you can that it's logging
-* Years of data storage possible
+- Diagnostic LED to show error status
+- Card activity LED so you can that it's logging
+- Years of data storage possible
 
 And being Arduino based, you can customise it to suit whatever data you want to log. There's a little bit of soldering required, so it's not quite plug and play.
 
 ![](images/wifi-edl-1-2.png)
 
-
 ## Shopping List:
 
-|Qty| Code | Description |
-|---|---|---|
-|1 | [XC4410](http://jaycar.com.au/p/XC4410) | Uno main board
-|1 | [XC4614](http://jaycar.com.au/p/XC4614) | WiFi shield
-|1 | [XC4536](http://jaycar.com.au/p/XC4536) | Datalogging shield
-|1 | [XC4446](http://jaycar.com.au/p/XC4446) | LDR module
-|1 | [XC4520](http://jaycar.com.au/p/XC4520) | Temperature and Humidity Module
-|1 | [WC6026](http://jaycar.com.au/p/WC6026) | socket-socket jumper leads
-|1 | [XC4983](http://jaycar.com.au/p/XC4983) | 8GB Micro SD card with adaptor
-|1 | [HM3211](http://jaycar.com.au/p/HM3211) | Header Terminal Strip
-
+| Qty | Code                                    | Description                     |
+| --- | --------------------------------------- | ------------------------------- |
+| 1   | [XC4410](http://jaycar.com.au/p/XC4410) | Uno main board                  |
+| 1   | [XC4614](http://jaycar.com.au/p/XC4614) | WiFi shield                     |
+| 1   | [XC4536](http://jaycar.com.au/p/XC4536) | Datalogging shield              |
+| 1   | [XC4446](http://jaycar.com.au/p/XC4446) | LDR module                      |
+| 1   | [XC4520](http://jaycar.com.au/p/XC4520) | Temperature and Humidity Module |
+| 1   | [WC6026](http://jaycar.com.au/p/WC6026) | socket-socket jumper leads      |
+| 1   | [XC4983](http://jaycar.com.au/p/XC4983) | 8GB Micro SD card with adaptor  |
+| 1   | [HM3211](http://jaycar.com.au/p/HM3211) | Header Terminal Strip           |
 
 ## Connections:
 
 The first step is to complete the physical build. Nearly all the connections are made on the prototyping area of the Datalogging Shield, then the Wi-Fi shield is plugged over the top Because all the connections to the Uno are made through the Datalogging Shield, there are no direct Uno connections listed, and they can be assumed to be the same as the Datalogging Shield:
 
-|Datalogging Shield|Temperature and Humidity Sensor|Wi-Fi Shield|Light Sensor|Function
-|---|---|---|---|---
-|L1-D4||||Diagnostic LED
-|L2-D3||||Card Use LED
-|5V|(middle pin)|5V|VCC|Power
-|GND|-|GND|GND|Ground
-|A0|||OUT|Analog signal from light sensor
-|D8|S|||Data Signal
-|D0(RX)||TX||Data from Wi-Fi Shield
-|D1(TX)||RX||Data to Wi-Fi Shield
+| Data Shield | Temp and Humidity Sensor | Wi-Fi Shield | Light Sensor | Function                        |
+| ----------- | ------------------------ | ------------ | ------------ | ------------------------------- |
+| L1-D4       |                          |              |              | Diagnostic LED                  |
+| L2-D3       |                          |              |              | Card Use LED                    |
+| 5V          | (middle pin)             | 5V           | VCC          | Power                           |
+| GND         | -                        | GND          | GND          | Ground                          |
+| A0          |                          |              | OUT          | Analog signal from light sensor |
+| D8          | S                        |              |              | Data Signal                     |
+| D0(RX)      |                          | TX           |              | Data from Wi-Fi Shield          |
+| D1(TX)      |                          | RX           |              | Data to Wi-Fi Shield            |
 
 We've made the connections using short offcuts of the jumper leads- blue for the ground, orange for the 5V and white for the signals from the sensors, which have been wired to a small three pin piece of the header strip (it breaks easily at the small notches between the pins). This makes it easier to change out the sensor modules if you want to log a different type of data. The connections between L1-D4 and L2-D3 are made with small pieces of wire too.
 
@@ -53,7 +55,7 @@ The final step is to connect the sensors to the board via the jumper leads and t
 The Wi-Fi Environmental Datalogger sketch uses a number of libraries, but most of these are included in recent builds of the Arduino IDE. The only one you might need to download is the library for the Real-Time Clock chip on the Datalogging shield, and is linked [here](https://github.com/adafruit/RTClib) . If you've previously done[one of the clock projects](http://www.jaycar.com.au/diy-arduino-clock) , you might already have this library installed.  
 Before uploading the code, turn the small white switches on the Wi-Fi shield to the 'off' position (closest to 1 2). This is because the Wi-Fi shield uses the serial port, and can interfere with the serial port during programming. Open the sketch and find these lines near line 37:
 
-```c
+```cpp
 #define SSIDNAME "Arduino"
 #define SSIDPWD "Arduino!"
 ```
@@ -64,12 +66,13 @@ Most of the hard work is done by the libraries- the sketch uses the libraries to
 
 Insert the card into the slot and check that the LED's only flash briefly. If they keep flashing, you might have a card or RTC error. You can check which error it is by counting the flashes:
 
-|1 Flash|Card not detected
-|---|---
-|2 Flashes|RTC not detected
-|3 Flashes|RTC not running
-|4 Flashes|Cannot open file
-|5 Flashes|Cannot write to card (probably card is full).
+| Flashes   | Meaning                                       |
+| --------- | --------------------------------------------- |
+| 1 Flash   | Card not detected                             |
+| 2 Flashes | RTC not detected                              |
+| 3 Flashes | RTC not running                               |
+| 4 Flashes | Cannot open file                              |
+| 5 Flashes | Cannot write to card (probably card is full). |
 
 If the time is not correct or you have an RTC error, then you might need to temporarily load the ds1307 example sketch from File>Examples>RTClib, and use that to check the RTC and set the time. If you get an SD card error, check that the card is formatted to FAT or FAT32 and has enough space available.
 
@@ -108,13 +111,22 @@ If you save it now, none of the formatting or charts can be saved under the .csv
 The Datalogger is very configurable- the logging interval can be set by the #define LOGINTERVAL command near the start of the sketch- this is measured in seconds, and the fastest rate is about one sample per second. Even at this rate, it should not run out of space for many years. With the default settings, we are getting about 35kB per day at one sample per minute, which equates to about 25 bytes per sample.
 
 The Wi-Fi webserver is set to give every 60th sample in the 'Sparse' file- this equates to once per hour, and can be changed in this line:
-```c
-if(strmatch("SPARSE.CSV",fname)){sendcsvsparse(60);crcount=0;}                           //serve file with every nth sample
+
+```cpp
+if(strmatch("SPARSE.CSV",fname)){
+    sendcsvsparse(60);crcount=0;
+    } //serve file with every nth sample
 ```
+
 The 'Recent' file option can be changed in the line straight after, where the 2000 is the approximate number of bytes that get delivered:
-```c
-if(strmatch("RECENT.CSV",fname)){sendcsvrecent(2000);crcount=0;}                         //serve header, and approximately last n (will typically be slightly more)
+
+```cpp
+if(strmatch("RECENT.CSV",fname)){
+    sendcsvrecent(2000);
+    crcount=0;
+    }  //serve header, and approximately last n (will typically be slightly more)
 ```
+
 The web pages that get served up are defined in the #define HTTP lines near the start of the sketch, and can of course be customized too.
 
 The default light sensor is simply having the raw analog signal (0-1023) logged, so this should suit any analog sensor, and it's possible to process the data afterwards in Excel if you have an equation you can use. Alternatively, you could convert the value in the sketch if you want to be able to immediately export the data. If you've used the header pins on the edge of the board it's easy to connect most of the other duinotech analog sensors. For example, add the [Soil Moisture Sensor](https://jaycar.com.au/p/XC4604) to keep track of when the garden might need watering, or the[Ultraviolet Sensor Module](https://jaycar.com.au/p/XC4518) to see how much sun the plants are getting.
@@ -123,24 +135,26 @@ The temperature and humidity are in degrees Centigrade and percent Humidity, bec
 
 The default Wi-Fi setting are for the Datalogger to connect to an existing Wi-Fi hotspot. If you'd like to set up the Datalogger to create its own hotspot, replace the following lines in the `wifiinit()` function:
 
-```c
-WIFIcmd("AT+CWQAP",ok,5000);         //exit any AP's
-WIFIcmd("AT+CWJAP=\""  SSIDNAME  "\",
-    \"" SSIDPWD  "\"","WIFI GOT IP\r\n",10000);  //join AP
-WIFIcmd("ATE0",ok,1000);           //turn echo off
-WIFIcmd("AT+CWMODE=1",ok,2000);    //station mode only
+```cpp
+WIFIcmd("AT+CWQAP",ok,5000);         //exit any AP's
+WIFIcmd("AT+CWJAP=\""SSIDNAME"\",\""SSIDPWD"\"","WIFI GOT IP\r\n",10000);  //join AP
+WIFIcmd("ATE0",ok,1000);           //turn echo off
+WIFIcmd("AT+CWMODE=1",ok,2000);    //station mode only
 ```
+
 With:
-```c
-WIFIcmd("AT+CWMODE=2",ok,2000);                                                   //AP mode only
-WIFIcmd("AT+CWSAP=\""  SSIDNAME  "\",\"" SSIDPWD  "\",11,3,4",ok,10000);          //set up AP
-WIFIcmd("ATE0",ok,1000);                                                          //turn echo off
+
+```cpp
+WIFIcmd("AT+CWMODE=2",ok,2000); //AP mode only
+WIFIcmd("AT+CWSAP=\""SSIDNAME"\",\""SSIDPWD"\",11,3,4",ok,10000); //set up AP
+WIFIcmd("ATE0",ok,1000);   //turn echo off
 ```
+
 The next thing we would do with the Datalogger is make it portable- perhaps put it in an enclosure and run it from batteries (via the DC jack) or a USB battery pack (via the USB port). Then it can be left somewhere to run independently.
 
 ## Code
 
 Note that you will need to install the
 
-* [RTClib library](https://github.com/adafruit/RTClib)
-as well.
+- [RTClib library](https://github.com/adafruit/RTClib)
+  as well.
